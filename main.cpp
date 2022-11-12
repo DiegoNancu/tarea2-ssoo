@@ -55,7 +55,6 @@ string getIp(string command) {
 void ipCheck(string command) {
 	char buffer[128];
 	string aux = "";
-	//cout << command << endl;
 	
 	FILE *pipe = popen(command.c_str(), "r");
 	if(!pipe) cout << "error" << endl;
@@ -77,13 +76,11 @@ void ipCheck(string command) {
 	if(pckg == receive) status = "UP";
 	else status = "DOWN";
 	int lost = stoi(pckg) - stoi(receive);
-	//string loss = to_string(lost);
 	myMutex.lock();
 	if(ip.length() < 10)
 	cout << ip << "\t\t" << pckg << "\t" << receive << "\t" << lost << "\t" << status << endl;
 	else
 	cout << ip << "\t" << pckg << "\t" << receive << "\t" << lost << "\t" << status << endl;
-	//cout << ip << "\t\t" << pckg << "\t" << receive << "\t" << lost << "\t" << status << endl;
 	myMutex.unlock();
 }
 
@@ -97,7 +94,6 @@ int ipCount(string ipfile) {
 	}
 	
 	file.close();
-	//cout << count << endl;
 	return count;
 }
 

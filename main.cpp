@@ -74,7 +74,7 @@ void ipCheck(string command) {
 	}
 	string ip = getIp(command);
 	string status;
-	if(pckg == receive) status = "UP";
+	if(stoi(receive) > 0) status = "UP";
 	else status = "DOWN";
 	int lost = stoi(pckg) - stoi(receive);
 	myMutex.lock();

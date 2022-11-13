@@ -9,7 +9,7 @@ using namespace std;
 mutex myMutex;
 string pckg;
 
-void ipCheck(string command);
+void ipCheck(string ip);
 
 int ipCount(string ipfile);
 

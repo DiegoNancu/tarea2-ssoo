@@ -9,8 +9,6 @@ using namespace std;
 mutex myMutex;
 string pckg;
 
-string getIp(string command);
-
 void ipCheck(string command);
 
 int ipCount(string ipfile);
@@ -19,9 +17,9 @@ int main(int argc, char *argv[]) {
 	pckg = argv[2];
 	//obtener ips
 	string filename = argv[1];
-	string iplist[ipCount(filename)];
-	ifstream file(filename.c_str());
 	int ipcount = ipCount(filename);
+	string iplist[ipcount];
+	ifstream file(filename.c_str());
 	
 	string aux;
 	int ip = 0;
@@ -36,8 +34,7 @@ int main(int argc, char *argv[]) {
 	
 	cout << "IP\t\tTrans.\tRec.\tPerd.\tEstado" << endl;
 	for(int i = 0; i < ipcount; i++) {
-		string command = "ping " + iplist[i] + " -c " + argv[2];
-		threads[i] = thread(ipCheck, command);
+		threads[i] = thread(ipCheck, iplist[i]);
 	}
 
 	for(int i = 0; i < ipcount; i++) {
@@ -47,15 +44,10 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-string getIp(string command) {
-	string ip = "";
-	for(int i = 5; command[i] != ' '; i++) ip += command[i];
-	return ip;
-}
-
-void ipCheck(string command) {
+void ipCheck(string ip) {
 	char buffer[128];
 	string aux = "";
+	string command = "ping " + ip + " -c " + pckg;
 	
 	FILE *pipe = popen(command.c_str(), "r");
 	if(!pipe) cout << "error" << endl;
@@ -72,7 +64,6 @@ void ipCheck(string command) {
 		if(comma == 1 && aux[i] == ' ') break;
 		if(comma == 1) receive += aux[i];
 	}
-	string ip = getIp(command);
 	string status;
 	if(stoi(receive) > 0) status = "UP";
 	else status = "DOWN";

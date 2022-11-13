@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
 	string filename = argv[1];
 	string iplist[ipCount(filename)];
 	ifstream file(filename.c_str());
+	int ipcount = ipCount(filename);
 	
 	string aux;
 	int ip = 0;
@@ -31,15 +32,15 @@ int main(int argc, char *argv[]) {
 	
 	file.close();
 	
-	thread threads[ipCount(filename)];
+	thread threads[ipcount];
 	
 	cout << "IP\t\tTrans.\tRec.\tPerd.\tEstado" << endl;
-	for(int i = 0; i < ipCount(filename); i++) {
+	for(int i = 0; i < ipcount; i++) {
 		string command = "ping " + iplist[i] + " -c " + argv[2];
 		threads[i] = thread(ipCheck, command);
 	}
 
-	for(int i = 0; i < ipCount(filename); i++) {
+	for(int i = 0; i < ipcount; i++) {
 		threads[i].join();
 	}
 	
